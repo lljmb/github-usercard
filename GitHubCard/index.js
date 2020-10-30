@@ -1,8 +1,18 @@
+import axios from 'axios';
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+// axios
+//   .get('https://api.github.com/users/lljmb')
+//   .then((myGit) => {
+//     console.log(myGit, 'it worked! much excite');
+//   })
+//   .catch((error) => {
+//     console.log(error, 'whoopsie daisy');
+//   });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -49,6 +59,33 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function gitFollowers({imageURL}){
+  // instatiating the elements
+  const gitCard = document.createElement('div');
+  const cardInfo = document.createElement('div');
+  const userImg = document.createElement('img');
+  const userName = document.createElement('p');
+  const heading = document.createElement('h3');
+  // setting class names, attributes & text
+  userImg.src = imageURL 
+  userImg.classList.add('.img.card');
+  gitCard.classList.add('.card');
+  heading.classList.add('.header');
+  userName.classList.add('.username');
+  cardInfo.classList.add('.p.card');
+// creating the hierarchy
+gitCard.appendChild(userImg);
+gitCard.appendChild(cardInfo);
+cardInfo.appendChild(heading);
+cardInfo.appendChild(userName);
+
+// return
+return gitCard
+
+}
+
+
 
 /*
   List of LS Instructors Github username's:
