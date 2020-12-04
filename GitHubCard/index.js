@@ -5,13 +5,15 @@ import axios from 'axios';
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const cards = document.querySelector('.cards')
+
 axios
-  .get('https://api.github.com/users/thegrindisreal86')
+  .get('https://api.github.com/users/lljmb')
   .then((res) => {
     const newGit = res.data
     const newGitCard = gitFollowers(newGit)
-    console.log(res.data);
-    document.querySelector('.cards').appendChild(newGitCard)
+    // console.log(res.data);
+    cards.appendChild(newGitCard)
   })
   .catch((error) => {
     console.log(error, 'whoopsie daisy');
@@ -30,6 +32,7 @@ axios
     and append the returned markup to the DOM as a child of .cards
 */
 
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -41,7 +44,26 @@ axios
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+ 'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',
+];
+
+followersArray.forEach(follower => {
+  axios
+  .get(`https://api.github.com/users/${follower}`)
+  .then(res => {
+      const followers = res.data;
+      const newGitFollower = gitFollowers(followers)
+      cards.appendChild(newGitFollower)
+  })
+  .catch(err => {
+    console.log('something went wrong', err);
+  })
+});
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -63,7 +85,7 @@ const followersArray = [];
     </div>
 */
 
-function gitFollowers({gitURL}){
+function gitFollowers(gitData){
   // instatiating the elements
   const gitCard = document.createElement('div');
   const cardInfo = document.createElement('div');
@@ -77,16 +99,16 @@ function gitFollowers({gitURL}){
   const biography = document.createElement('p');
   const heading = document.createElement('h3');
   // setting class names, attributes & text
-  userImg.src = gitURL.avatar_url; 
-  location.textContent = `Location: ${gitURL.location}`;
-  biography.textContent = `Bio: ${gitURL.bio}`;
-  followerCount.textContent = `Followers: ${gitURL.followers}`
-  followCount.textContent = `Following: ${gitURL.following}`
+  userImg.src = gitData.avatar_url; 
+  location.textContent = `Location: ${gitData.location}`;
+  biography.textContent = `Bio: ${gitData.bio}`;
+  followerCount.textContent = `Followers: ${gitData.followers}`
+  followCount.textContent = `Following: ${gitData.following}`
   profile.textContent = `Profile: `
-  gitAddress.textContent = gitURL;
-  gitAddress.href = gitURL;
-  heading.textContent = gitURL.name;
-  userName.textContent = `Username: ${gitURL.username}`
+  gitAddress.textContent = gitData.html_url;
+  gitAddress.href = gitData.url;
+  heading.textContent = gitData.name;
+  userName.textContent = `Username: ${gitData.login}`
  
   gitCard.classList.add('card');
   heading.classList.add('name');
