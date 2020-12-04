@@ -5,14 +5,17 @@ import axios from 'axios';
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-// axios
-//   .get('https://api.github.com/users/lljmb')
-//   .then((myGit) => {
-//     console.log(myGit, 'it worked! much excite');
-//   })
-//   .catch((error) => {
-//     console.log(error, 'whoopsie daisy');
-//   });
+axios
+  .get('https://api.github.com/users/thegrindisreal86')
+  .then((res) => {
+    const newGit = res.data
+    const newGitCard = gitFollowers(newGit)
+    console.log(res.data);
+    document.querySelector('.cards').appendChild(newGitCard)
+  })
+  .catch((error) => {
+    console.log(error, 'whoopsie daisy');
+  });
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -60,28 +63,49 @@ const followersArray = [];
     </div>
 */
 
-function gitFollowers({imageURL}){
+function gitFollowers({gitURL}){
   // instatiating the elements
   const gitCard = document.createElement('div');
   const cardInfo = document.createElement('div');
   const userImg = document.createElement('img');
   const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const gitAddress = document.createElement('a');
+  const profile = document.createElement('p');
+  const followCount = document.createElement('p');
+  const followerCount = document.createElement('p');
+  const biography = document.createElement('p');
   const heading = document.createElement('h3');
   // setting class names, attributes & text
-  userImg.src = imageURL 
-  userImg.classList.add('.img.card');
-  gitCard.classList.add('.card');
-  heading.classList.add('.header');
-  userName.classList.add('.username');
-  cardInfo.classList.add('.p.card');
-// creating the hierarchy
-gitCard.appendChild(userImg);
-gitCard.appendChild(cardInfo);
-cardInfo.appendChild(heading);
-cardInfo.appendChild(userName);
+  userImg.src = gitURL.avatar_url; 
+  location.textContent = `Location: ${gitURL.location}`;
+  biography.textContent = `Bio: ${gitURL.bio}`;
+  followerCount.textContent = `Followers: ${gitURL.followers}`
+  followCount.textContent = `Following: ${gitURL.following}`
+  profile.textContent = `Profile: `
+  gitAddress.textContent = gitURL;
+  gitAddress.href = gitURL;
+  heading.textContent = gitURL.name;
+  userName.textContent = `Username: ${gitURL.username}`
+ 
+  gitCard.classList.add('card');
+  heading.classList.add('name');
+  userName.classList.add('username');
+  cardInfo.classList.add('card-info');
+  // creating the hierarchy
+  gitCard.appendChild(userImg);
+  gitCard.appendChild(cardInfo);
+  cardInfo.appendChild(heading);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  profile.appendChild(gitAddress);
+  cardInfo.appendChild(biography);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followCount);
+  cardInfo.appendChild(followerCount);
 
-// return
-return gitCard
+  // return
+  return gitCard
 
 }
 
